@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<%- include ('partials/nav') -%>
+
+    <h3> Ajouter un film </h3>
+<div>
+    <form method="post" action="/moovies/add">
+        <label for="titrefilm">Titre:</label>
+        <input id="titrefilm" name="titrefilm" type="text">
+        <label for="anneefilm">Année:</label>
+        <input id="anneefilm" name="anneefilm" type="text">
+        <button type="submit">Ajouter</button>
+    </form>
+
+    <ul class="filmadded">
+
+    </ul>
+</div>
+
+<%- include ('partials/footer') -%>
+</body>
+<script>
+    //On récupére notre formulaitre
+    const form = document.querySelector('form');
+
+    //A l'aide de ad event listner on écoutera l'évenement submit
+    form.addEventListener('submit', addMovie);
+
+    //On écrit notre fonction addMovie qui prendra en paramétre event
+    function addMovie(event){
+        //On stop le comportement par default du chargement de la page
+        event.preventDefault()
+
+        if(fetch){
+            //On écoute le retour sur la method fetch en Post de form
+            fetch('/moovies/add', {
+                method: 'POST',
+                body: new FormData(form)
+            })
+            //Sur la réussite je déclence la fonction cherckStatus
+            .then(checkStatus)
+            //Sur l'erreur je catch avec une fonction dans la console
+            .catch((error)=>{
+                console.error('request Failed', error)
+            })
+        }
+    }
+
+    function checkStatus(response){
+        //On vérifie les status 200
+        if(response.status >= 200 && response.status < 300){
+            // On ajoute le film
+            let newMovieLi =  document.createElement('li')
+            const titre = document.getElementById('titrefilm').value
+            const year = document.getElementById('anneefilm').value
+            newMovieLi.innerHTML =`${titre}, Année: ${year}`;
+            document.querySelector('.filmadded').appendChild(newMovieLi)
+            form.reset() //Pour reset les valeurs des champs
+        }
+    }
+</script>
+</html>

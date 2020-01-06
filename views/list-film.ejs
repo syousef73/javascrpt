@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<!-- On pense a bien inclure nos deux template -->
+<%- include ('partials/nav') -%>
+
+<div style="height: 350px;
+align-content:space-around;
+display:flex; justify-content:space-around; flex-wrap: wrap">
+    <% if (films) {%>
+    <% for (film of films){ %>
+    <div style="width: 30%; border: 5px double red">
+        <h2><%= film.title %></h2>
+        <p>Film sortit en <%= film.year%></p>
+    </div>
+    <%}%>
+    <%}else{%>
+        No record found
+    <%}%>
+</div>
+
+<%- include ('partials/footer') -%>
+</body>
+</html>
